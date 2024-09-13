@@ -16,7 +16,7 @@ function UserDetails() {
 
   useEffect(() => {
     fetchUserRepos();
-  }, [username]);
+  }, [fetchUserRepos, username]);
 
   return (
     <div style={{ padding: '20px' }}>
