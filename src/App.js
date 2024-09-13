@@ -21,7 +21,7 @@ function App() {
     if (query) {
       fetchUsers();
     }
-  }, [query, page, sortOption]);
+  }, [query, page, sortOption, fetchUsers]);
 
   const handleSort = (option) => {
     setSortOption(option);
