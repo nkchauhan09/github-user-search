@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { TextField, Button, Card, CardContent, Typography, Pagination, Select, MenuItem } from '@mui/material';
 
@@ -8,20 +8,20 @@ function App() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [sortOption, setSortOption] = useState('');
-  
+
   const PER_PAGE = 10;
 
-  const fetchUsers = async () => {
-    const response = await axios.get(`https://api.github.com/search/users?q=${query}&per_page=${PER_PAGE}&page=${page}`);
-    setUsers(response.data.items);
-    setTotalPages(Math.ceil(response.data.total_count / PER_PAGE));
-  };
+  const fetchUsers = useCallback(async () => {
+    if (query) {
+      const response = await axios.get(`https://api.github.com/search/users?q=${query}&per_page=${PER_PAGE}&page=${page}`);
+      setUsers(response.data.items);
+      setTotalPages(Math.ceil(response.data.total_count / PER_PAGE));
+    }
+  }, [query, page]);
 
   useEffect(() => {
-    if (query) {
-      fetchUsers();
-    }
-  }, [query, page, sortOption, fetchUsers]);
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleSort = (option) => {
     setSortOption(option);
